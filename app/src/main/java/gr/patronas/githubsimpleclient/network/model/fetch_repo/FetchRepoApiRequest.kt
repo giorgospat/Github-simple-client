@@ -1,10 +1,12 @@
 package gr.patronas.githubsimpleclient.network.model.fetch_repo
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class FetchRepoApiRequest(
-    @SerializedName("owner")
+    @Json(name = "owner")
     val owner: String,
-    @SerializedName("repo")
+    @Json(name = "repo")
     val repo: String
 )

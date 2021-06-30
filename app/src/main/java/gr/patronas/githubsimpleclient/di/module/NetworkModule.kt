@@ -1,6 +1,7 @@
 package gr.patronas.githubsimpleclient.di.module
 
 import android.app.Application
+import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,7 +14,7 @@ import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import java.io.File
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
@@ -21,6 +22,16 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class NetworkModule {
+
+    @Singleton
+    @Provides
+    fun provideMoshi(
+        fetchRepoCommitsAdapter: FetchRepoCommitsAdapter
+    ): Moshi {
+        return Moshi.Builder()
+            .add(fetchRepoCommitsAdapter)
+            .build()
+    }
 
     @Provides
     @Singleton
