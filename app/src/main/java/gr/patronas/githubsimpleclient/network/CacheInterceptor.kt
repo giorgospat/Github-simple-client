@@ -10,7 +10,7 @@ class CacheInterceptor @Inject constructor() : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val response = chain.proceed(chain.request())
         val cacheControl: CacheControl = CacheControl.Builder()
-            .maxAge(3, TimeUnit.MINUTES) // 5 minutes cache
+            .maxAge(5, TimeUnit.MINUTES) // 5 minutes cache
             .build()
 
         return response.newBuilder()

@@ -10,6 +10,7 @@ import gr.patronas.githubsimpleclient.BuildConfig
 import gr.patronas.githubsimpleclient.network.ApiService
 import gr.patronas.githubsimpleclient.network.CacheInterceptor
 import gr.patronas.githubsimpleclient.network.NetworkConstants.BASE_API_URL
+import gr.patronas.githubsimpleclient.network.adapter.FetchRepoCommitsAdapter
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -48,7 +49,7 @@ class NetworkModule {
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
             OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
-                .addInterceptor(cacheInterceptor)
+                .addNetworkInterceptor(cacheInterceptor)
                 .cache(cache)
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(10, TimeUnit.SECONDS)
@@ -62,12 +63,13 @@ class NetworkModule {
             .build()
 
     @Provides
-    @Singleton
+    //  @Singleton
     fun provideRetrofit(
-        okHttpClient: OkHttpClient
+        okHttpClient: OkHttpClient,
+        moshi: Moshi
     ): ApiService {
         return Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
             .baseUrl(BASE_API_URL)
             .client(okHttpClient)
             .build()
