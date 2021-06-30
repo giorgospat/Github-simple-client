@@ -1,16 +1,20 @@
 package gr.patronas.githubsimpleclient.di.module
 
+import android.app.Application
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import gr.patronas.githubsimpleclient.BuildConfig
 import gr.patronas.githubsimpleclient.network.ApiService
+import gr.patronas.githubsimpleclient.network.CacheInterceptor
 import gr.patronas.githubsimpleclient.network.NetworkConstants.BASE_API_URL
+import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.File
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -20,19 +24,31 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient() = if (BuildConfig.DEBUG) {
-        val loggingInterceptor = HttpLoggingInterceptor()
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
-        OkHttpClient.Builder()
-            .addInterceptor(loggingInterceptor)
+    fun provideOkhttpCache(application: Application): Cache {
+        val cacheSize = (10 * 1024 * 1024).toLong()
+        return Cache(File(application.cacheDir, "repo-cache"), cacheSize)
+    }
+
+    @Provides
+    @Singleton
+    fun provideOkHttpClient(cache: Cache, cacheInterceptor: CacheInterceptor) =
+        if (BuildConfig.DEBUG) {
+            val loggingInterceptor = HttpLoggingInterceptor()
+            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+            OkHttpClient.Builder()
+                .addInterceptor(loggingInterceptor)
+                .addInterceptor(cacheInterceptor)
+                .cache(cache)
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+                .build()
+        } else OkHttpClient
+            .Builder()
+            .addInterceptor(cacheInterceptor)
+            .cache(cache)
             .connectTimeout(10, TimeUnit.SECONDS)
             .readTimeout(10, TimeUnit.SECONDS)
             .build()
-    } else OkHttpClient
-        .Builder()
-        .connectTimeout(10, TimeUnit.SECONDS)
-        .readTimeout(10, TimeUnit.SECONDS)
-        .build()
 
     @Provides
     @Singleton
