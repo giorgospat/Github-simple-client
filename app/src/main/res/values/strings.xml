@@ -7,6 +7,11 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="home_enter_repository_name_label">Please enter a Repository name</string>
+    <string name="repository_name_example">e.g. "JakeWharton/RxBinding"</string>
+    <string name="repository_name_slash">/</string>
+    <string name="hint_repository">Repository</string>
+    <string name="hint_owner">Owner</string>
+    <string name="btn_fetch_repository">Fetch Repository</string>
 </resources>
