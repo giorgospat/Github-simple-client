@@ -1,4 +1,4 @@
-package gr.patronas.githubsimpleclient
+package gr.patronas.githubsimpleclient.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -6,6 +6,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
+import gr.patronas.githubsimpleclient.R
 import gr.patronas.githubsimpleclient.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
