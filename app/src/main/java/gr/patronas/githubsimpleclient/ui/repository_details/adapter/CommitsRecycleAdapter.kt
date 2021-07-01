@@ -31,10 +31,10 @@ class CommitsRecycleAdapter(
 
         with(holder.binding) {
             with(commit) {
-                txtShaValue.text = commit.sha
-                txtMessageValue.text = commit.message
-                txtAuthorValue.text = commit.author
-                txtDateValue.text = commit.date
+                txtShaValue.text = sha
+                txtMessageValue.text = message
+                txtAuthorValue.text = author
+                txtDateValue.text = date
             }
         }
 
