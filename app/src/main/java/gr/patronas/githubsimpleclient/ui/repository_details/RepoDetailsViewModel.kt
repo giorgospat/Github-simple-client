@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import gr.patronas.githubsimpleclient.R
 import gr.patronas.githubsimpleclient.common_android.resources.AndroidResources
 import gr.patronas.githubsimpleclient.domain.FetchGithubRepoUseCase
+import gr.patronas.githubsimpleclient.kotlin_utils.DispatcherProvider
 import gr.patronas.githubsimpleclient.network.model.GenericResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -17,8 +18,9 @@ import kotlin.coroutines.CoroutineContext
 @HiltViewModel
 class RepoDetailsViewModel @Inject constructor(
     private val fetchRepoUseCase: FetchGithubRepoUseCase,
-    private val androidResources: AndroidResources
-) : ViewModel(), CoroutineScope {
+    private val androidResources: AndroidResources,
+    private val dispatcherProvider: DispatcherProvider
+) : ViewModel(), CoroutineScope by dispatcherProvider.getCoroutineScope() {
 
     private val _uiModel = MutableLiveData<RepoDetailsUiModel>()
     val uiModel: LiveData<RepoDetailsUiModel> = _uiModel
@@ -27,13 +29,13 @@ class RepoDetailsViewModel @Inject constructor(
         _uiModel.value = RepoDetailsUiModel(
             showLoading = true
         )
-        launch {
+        launch(dispatcherProvider.getBackgroundThread()) {
             val result = fetchRepoUseCase.fetchRepoCommits(
                 owner = owner,
                 repoName = repoName,
                 limit = limit
             )
-            launch(Dispatchers.Main) {
+            launch(dispatcherProvider.getMainThread()) {
                 when (result) {
                     is GenericResult.Success -> {
                         _uiModel.value = RepoDetailsUiModel(
