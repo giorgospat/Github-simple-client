@@ -25,6 +25,9 @@ class RepoDetailsMapper @Inject constructor() {
                 )
             )
         }
+        domainResponse.sortByDescending {
+            it.date
+        }
         return domainResponse
     }
 }
