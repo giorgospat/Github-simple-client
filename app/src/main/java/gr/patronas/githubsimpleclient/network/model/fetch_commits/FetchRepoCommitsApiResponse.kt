@@ -7,23 +7,23 @@ import gr.patronas.githubsimpleclient.network.model.BaseApiResponse
 @JsonClass(generateAdapter = true)
 data class FetchRepoCommitsApiResponse(
     @Json(name = "sha")
-    val sha: String,
+    val sha: String?,
     @Json(name = "commit")
-    val commit: Commit
+    val commit: Commit?
 ) : BaseApiResponse()
 
 @JsonClass(generateAdapter = true)
 data class Commit(
     @Json(name = "author")
-    val author: Author,
+    val author: Author?,
     @Json(name = "message")
-    val message: String
+    val message: String?
 )
 
 @JsonClass(generateAdapter = true)
 data class Author(
     @Json(name = "name")
-    val name: String,
+    val name: String?,
     @Json(name = "date")
-    val date: String
+    val date: String?
 )

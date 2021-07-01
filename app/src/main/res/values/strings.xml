@@ -2,8 +2,8 @@
     <string name="app_name">GithubSimpleClient</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
+    <string name="home_fragment_label">Home</string>
+    <string name="repo_details_fragment_label">Repository Details</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
@@ -14,4 +14,12 @@
     <string name="hint_repository">Repository</string>
     <string name="hint_owner">Owner</string>
     <string name="btn_fetch_repository">Fetch Repository</string>
+    <string name="error_fetching_repository">There was an error fetching repository. Please try again</string>
+    <string name="repository_id_label">Repository id: <b>%1$s</b></string>
+    <string name="error_fetching_commits">There was an error fetching repository commits. Please try again</string>
+    <string name="commit_sha_placeholder">Sha:</string>
+    <string name="commit_message_placeholder">Message:</string>
+    <string name="commit_author_placeholder">Author:</string>
+    <string name="commit_date_placeholder">Date:</string>
+
 </resources>

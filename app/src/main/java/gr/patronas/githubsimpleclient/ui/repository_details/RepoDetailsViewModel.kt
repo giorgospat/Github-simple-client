@@ -1,4 +1,4 @@
-package gr.patronas.githubsimpleclient.ui.home
+package gr.patronas.githubsimpleclient.ui.repository_details
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -15,41 +15,36 @@ import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
+class RepoDetailsViewModel @Inject constructor(
     private val fetchRepoUseCase: FetchGithubRepoUseCase,
     private val androidResources: AndroidResources
 ) : ViewModel(), CoroutineScope {
 
-    private val _uiModel = MutableLiveData<HomeUiModel>()
-    val uiModel: LiveData<HomeUiModel> = _uiModel
+    private val _uiModel = MutableLiveData<RepoDetailsUiModel>()
+    val uiModel: LiveData<RepoDetailsUiModel> = _uiModel
 
-    fun fetchGithubRepository(owner: String, repoName: String) {
-        _uiModel.value = HomeUiModel(
+    fun fetchRepoCommits(owner: String, repoName: String, limit: Int) {
+        _uiModel.value = RepoDetailsUiModel(
             showLoading = true
         )
         launch {
-            val result = fetchRepoUseCase.fetchRepoDetails(
+            val result = fetchRepoUseCase.fetchRepoCommits(
                 owner = owner,
-                repoName = repoName
+                repoName = repoName,
+                limit = limit
             )
             launch(Dispatchers.Main) {
                 when (result) {
                     is GenericResult.Success -> {
-                        _uiModel.value = HomeUiModel(
+                        _uiModel.value = RepoDetailsUiModel(
                             showLoading = false,
-                            repositoryIsValid = true,
-                            repoDetailsArgument = RepoDetailsArgument(
-                                repoOwner = owner,
-                                repoName = repoName,
-                                repoId = result.data.repositoryId
-                            )
+                            listData = result.data
                         )
                     }
                     else -> {
-                        _uiModel.value = HomeUiModel(
+                        _uiModel.value = RepoDetailsUiModel(
                             showLoading = false,
-                            repositoryIsValid = false,
-                            errorMessage = androidResources.getString(R.string.error_fetching_repository)
+                            errorMessage = androidResources.getString(R.string.error_fetching_commits)
                         )
                     }
                 }
@@ -57,9 +52,6 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun clearUiModel() {
-        _uiModel.value = HomeUiModel()
-    }
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.IO

@@ -3,26 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/HomeFragment">
 
     <fragment
-        android:id="@+id/FirstFragment"
+        android:id="@+id/HomeFragment"
         android:name="gr.patronas.githubsimpleclient.ui.home.HomeFragment"
-        android:label="@string/first_fragment_label"
+        android:label="@string/home_fragment_label"
         tools:layout="@layout/fragment_home">
-
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            app:destination="@id/RepoDetailsFragment" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
+        android:id="@+id/RepoDetailsFragment"
         android:name="gr.patronas.githubsimpleclient.ui.repository_details.RepoDetailsFragment"
-        android:label="@string/second_fragment_label"
+        android:label="@string/repo_details_fragment_label"
         tools:layout="@layout/fragment_repo_details">
-
-        <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+        <argument
+            android:name="repoDetails"
+            android:defaultValue="@null"
+            app:argType="gr.patronas.githubsimpleclient.ui.home.RepoDetailsArgument"
+            app:nullable="true" />
     </fragment>
 </navigation>

@@ -1,5 +1,6 @@
 package gr.patronas.githubsimpleclient.domain
 
+import gr.patronas.githubsimpleclient.domain.model.CommitDetailsDomainModel
 import gr.patronas.githubsimpleclient.network.model.BaseApiResponseList
 import gr.patronas.githubsimpleclient.network.model.GenericResult
 import gr.patronas.githubsimpleclient.network.model.fetch_commits.FetchRepoCommitsApiResponse
@@ -11,5 +12,5 @@ interface FetchGithubRepoUseCase {
         owner: String,
         repoName: String,
         limit: Int
-    ): GenericResult<BaseApiResponseList<FetchRepoCommitsApiResponse>>
+    ): GenericResult<List<CommitDetailsDomainModel>>
 }
